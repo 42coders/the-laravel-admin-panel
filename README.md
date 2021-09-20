@@ -1,11 +1,9 @@
-# Very short description of the package
+# Adds a zero configuration Admin Panel to your Laravel Application
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/the42coders/the-laravel-admin-panel.svg?style=flat-square)](https://packagist.org/packages/the42coders/the-laravel-admin-panel)
 [![Build Status](https://img.shields.io/travis/the42coders/the-laravel-admin-panel/master.svg?style=flat-square)](https://travis-ci.org/the42coders/the-laravel-admin-panel)
 [![Quality Score](https://img.shields.io/scrutinizer/g/the42coders/the-laravel-admin-panel.svg?style=flat-square)](https://scrutinizer-ci.com/g/the42coders/the-laravel-admin-panel)
 [![Total Downloads](https://img.shields.io/packagist/dt/the42coders/the-laravel-admin-panel.svg?style=flat-square)](https://packagist.org/packages/the42coders/the-laravel-admin-panel)
-
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
 
 ## Installation
 
