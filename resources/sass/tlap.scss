@@ -1,0 +1,37 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import '~@fortawesome/fontawesome-free/css/all';
+@import "~datatables.net-bs5/css/dataTables.bootstrap5.css";
+@import "~datatables.net-responsive-bs";
+@import "~datatables.net-responsive-bs5";
+
+body{
+    background-color: #edf2f9;
+}
+
+.nav{
+    a{
+        color: #212529;
+    }
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+    background-color: white;
+    color: #fa5661;
+}
+
+.card{
+    border-radius: calc(.375rem - 0px) calc(.375rem - 0px) 0 0;
+    box-shadow: 0 7px 14px 0 rgb(65 69 88 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%);
+    border-radius: .375rem;
+    border: 0 solid #edf2f9;
+    background-color: #fff;
+    background-clip: border-box;
+    .card-header{
+        border-radius: calc(.375rem - 0px) calc(.375rem - 0px) 0 0;
+        padding: 1rem 1.25rem;
+        margin-bottom: 0;
+        background-color: #fff;
+        border-bottom: 0 solid #edf2f9;
+    }
+}

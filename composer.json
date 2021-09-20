@@ -1,0 +1,54 @@
+{
+    "name": "the42coders/the-laravel-admin-panel",
+    "description": "A package to create an Admin panel with basic crud.",
+    "keywords": [
+        "42coders",
+        "the-laravel-admin-panel"
+    ],
+    "homepage": "https://github.com/42coders/the-laravel-admin-panel",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Max Hutschenreiter",
+            "email": "max@42coders.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">7.1",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "the42coders\\TLAP\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "the42coders\\TLAP\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "the42coders\\TLAP\\TLAPServiceProvider"
+            ],
+            "aliases": {
+                "TLAP": "the42coders\\TLAP\\TLAPFacade"
+            }
+        }
+    }
+}
