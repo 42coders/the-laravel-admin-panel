@@ -16,7 +16,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('vendor/tlap/css/tlap.css') }}" rel="stylesheet">
-
+@yield('styles')
 </head>
 <body>
 <div class="container-fluid">
