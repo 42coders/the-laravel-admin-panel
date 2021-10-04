@@ -10,21 +10,21 @@
 You can install the package via composer:
 
 ```bash
-composer require max-hutschenreiter/the-laravel-admin-panel
+composer require the42coders/the-laravel-admin-panel
 ```
 
 You need to register the routes to your web.php routes File as well. Since the-laravel-admin-panel Package is very powerful make sure to secure the routes with whatever authentication you use in the rest of your app.
 
 ```php
 Route::group(['middleware' => ['auth']], function () {
-    \the42coders\Workflows\Workflows::routes();
+    \the42coders\TLAP\TLAP::routes();
 });
 ```
 
 You need to publish the assets of the Package
 
 ```bash
-php artisan vendor:publish --provider="the42coders\the-laravel-admin-panel\TLAPServiceProvider"  --tag=assets  
+php artisan vendor:publish --provider="the42coders\TLAP\TLAPServiceProvider"  --tag=assets  
 ```
 
 Other publishable Contents are
@@ -32,19 +32,19 @@ Other publishable Contents are
 config
 
 ```bash
-php artisan vendor:publish --provider="the42coders\the-laravel-admin-panel\TLAPServiceProvider"  --tag=config  
+php artisan vendor:publish --provider="the42coders\TLAP\TLAPServiceProvider"  --tag=config  
 ```
 
 language
 
 ```bash
-php artisan vendor:publish --provider="the42coders\the-laravel-admin-panel\TLAPServiceProvider"  --tag=lang  
+php artisan vendor:publish --provider="the42coders\TLAP\TLAPServiceProvider"  --tag=lang  
 ```
 
 views
 
 ```bash
-php artisan vendor:publish --provider="the42coders\the-laravel-admin-panel\TLAPServiceProvider"  --tag=views  
+php artisan vendor:publish --provider="the42coders\TLAP\TLAPServiceProvider"  --tag=views  
 ```
 
 
@@ -72,7 +72,7 @@ Now you can just visit the url of https://your-website.de/admin.
 You can change the url under which the admin panel will be accessible 
 in the tlap.php config file with the path variable.
 
-This package autoloads your relations if you use return types on them.
+This package autoload your relations if you use return types on them.
 
 ``` php
 public function posts(): HasMany

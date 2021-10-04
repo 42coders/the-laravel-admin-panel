@@ -6,6 +6,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use the42coders\TLAP\Fields\CheckboxField;
 use the42coders\TLAP\Fields\NumberField;
+use the42coders\TLAP\Fields\TextAreaField;
 use the42coders\TLAP\Fields\TextField;
 use the42coders\TLAP\Fields\TimeStampField;
 use the42coders\TLAP\Fields\PasswordField;
@@ -33,27 +34,18 @@ class TLAP
 
     public static function getForm($columnName, $columnInfo, $model = null)
     {
+        $autofieldNames = config('tlap.autofields.name');
+        $autofieldTypes = config('tlap.autofields.type');
 
-        if($columnInfo['type'] == 'timestamp'){
-            $field = new TimeStampField($columnName);
+        if(array_key_exists($columnName, $autofieldNames)){
+            $field = new $autofieldNames[$columnName]($columnName);
             return $field->render($model);
         }
 
-        if($columnName == 'pw' || $columnName == 'password'){
-            $field = new PasswordField($columnName);
+        if(array_key_exists($columnInfo['type'], $autofieldTypes)){
+            $field = new $autofieldTypes[$columnInfo['type']]($columnName);
             return $field->render($model);
         }
-        if($columnInfo['type'] === 'tinyint(1)'){
-            $field = new CheckboxField($columnName);
-            return $field->render($model);
-        }
-
-        if(strpos($columnInfo['type'], 'int') !== false){
-            $field = new NumberField($columnName);
-            return $field->render($model);
-        }
-
-
 
         $field = new TextField($columnName);
 

@@ -2,6 +2,7 @@
 
 namespace the42coders\TLAP\Traits;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +53,7 @@ trait TLAPAdminTrait
         foreach ($reflector->getMethods() as $reflectionMethod) {
             $returnType = $reflectionMethod->getReturnType();
             if ($returnType) {
-                if (in_array(class_basename($returnType->getName()), ['HasOne', 'HasMany', 'BelongsTo', 'BelongsToMany', 'MorphToMany', 'MorphTo'])) {
+                if (in_array(class_basename($returnType->getName()), config('tlap.relations'))) {
                     $relations[] = $reflectionMethod;
                 }
             }
@@ -201,12 +202,33 @@ trait TLAPAdminTrait
                 ->count();
         }
 
+        $columnStructure = self::getTLAPTableStructure();
+        $data = self::applyDataFilter($data->toArray(), $columnStructure);
+
         return response()->json([
             'draw' => intval($request->input('draw')),
             "recordsTotal"=> intval($totalData),
             "recordsFiltered"=> intval($totalFiltered),
             'data' => $data
         ]);
+    }
+
+    public static function applyDataFilter(array $data, array $columnsStructure): array
+    {
+        $columnStructure = self::getTLAPTableStructure();
+
+        foreach($data as $dataKey => $dataValue){
+            foreach($columnStructure as $columnKey => $columnValue){
+                if(array_key_exists($columnValue['type'], config('tlap.datatableFilter.type'))){
+                    $filterName = config('tlap.datatableFilter.type')[$columnValue['type']];
+                    $filter = new $filterName();
+                    $data[$dataKey][$columnKey] = $filter->filter($dataValue[$columnKey]);
+                }
+            }
+        }
+
+
+        return $data;
     }
 
     public static function getDatatableIdFiltered(Request $request, $ids = null): \Illuminate\Http\JsonResponse
@@ -264,6 +286,9 @@ trait TLAPAdminTrait
                 })
                 ->count();
         }
+
+        $columnStructure = self::getTLAPTableStructure();
+        $data = self::applyDataFilter($data->toArray(), $columnStructure);
 
         return response()->json([
             'draw' => intval($request->input('draw')),
