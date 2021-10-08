@@ -2,13 +2,12 @@
 
 namespace the42coders\TLAP\Traits;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use ReflectionClass;
-use the42coders\TLAP\Fields\TextField;
+use the42coders\TLAP\Contracts\Fields\Field;
 use the42coders\TLAP\TLAP;
 
 trait TLAPAdminTrait
@@ -21,13 +20,13 @@ trait TLAPAdminTrait
         return self::$fields;
     }
 
-    public static function getTLAPStaticColumnStructure($tableName)
+    public static function getTLAPStaticColumnStructure($tableName): array
     {
         $structure = [];
 
-        $table_info_columns = DB::select(DB::raw('SHOW COLUMNS FROM ' . $tableName));
+        $tableInfoColumns = DB::select(DB::raw('SHOW COLUMNS FROM ' . $tableName));
 
-        foreach ($table_info_columns as $column) {
+        foreach ($tableInfoColumns as $column) {
             $structure[$column->Field] = [
                 'type' => $column->Type,
                 'nullable' => $column->Null,
@@ -40,7 +39,7 @@ trait TLAPAdminTrait
         return $structure;
     }
 
-    public static function withRelations():array
+    public static function withRelations(): array
     {
         return Arr::pluck(self::getEloquentRelations(), 'name');
     }
@@ -64,7 +63,7 @@ trait TLAPAdminTrait
 
     public static function getModelName(): string
     {
-        return substr(strrchr(__CLASS__, "\\"), 1);
+        return class_basename(__CLASS__);
     }
 
     public static function getModelPluralName(): string
@@ -77,7 +76,7 @@ trait TLAPAdminTrait
         return (new static)->getTable();
     }
 
-    public static function getTLAPTableStructure()
+    public static function getTLAPTableStructure(): array
     {
         $tableName = self::getTLAPStaticTableName();
 
@@ -97,6 +96,8 @@ trait TLAPAdminTrait
         }
 
         $form = '';
+
+        /** @var Field $field */
         foreach(self::fields() as $field) {
             $form .= $field->render($model);
         }
@@ -111,7 +112,7 @@ trait TLAPAdminTrait
 
     public static function getDatatableFields(): array
     {
-        if(empty(self::fields())){
+        if (empty(self::fields())){
             return array_keys(self::cleanData(self::getTLAPTableStructure()));
         }
 
@@ -140,9 +141,9 @@ trait TLAPAdminTrait
 
         $columns = self::getTLAPTableStructure();
 
-        foreach($columns as $columName => $column){
+        foreach($columns as $columnName => $column){
             if($column['nullable'] === 'NO'){
-                $validation[$columName] = 'required';
+                $validation[$columnName] = 'required';
             }
         }
 
@@ -173,11 +174,11 @@ trait TLAPAdminTrait
 
         $columns = self::getColumnNames();
 
-        if($columns[0] !== 'id'){
+        if ($columns[0] !== 'id'){
             array_unshift($columns, 'id');
         }
 
-        if(empty($request->input('search.value')))
+        if (empty($request->input('search.value')))
         {
             $data = self::select($columns)
                 ->offset($start)
@@ -219,14 +220,13 @@ trait TLAPAdminTrait
 
         foreach($data as $dataKey => $dataValue){
             foreach($columnStructure as $columnKey => $columnValue){
-                if(array_key_exists($columnValue['type'], config('tlap.datatableFilter.type'))){
-                    $filterName = config('tlap.datatableFilter.type')[$columnValue['type']];
-                    $filter = new $filterName();
+                $filterName = config('tlap.datatableFilter.type.' . $columnValue['type']);
+                if (class_exists($filterName)) {
+                    $filter = app($filterName);
                     $data[$dataKey][$columnKey] = $filter->filter($dataValue[$columnKey]);
                 }
             }
         }
-
 
         return $data;
     }

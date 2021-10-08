@@ -34,16 +34,16 @@ class TLAP
 
     public static function getForm($columnName, $columnInfo, $model = null)
     {
-        $autofieldNames = config('tlap.autofields.name');
-        $autofieldTypes = config('tlap.autofields.type');
+        $autoFieldName = config('tlap.autofields.name.' . $columnName);
+        $autoFieldType = config('tlap.autofields.type.' . $columnInfo['type']);
 
-        if(array_key_exists($columnName, $autofieldNames)){
-            $field = new $autofieldNames[$columnName]($columnName);
+        if (class_exists($autoFieldName)){
+            $field = new $autoFieldName($columnName);
             return $field->render($model);
         }
 
-        if(array_key_exists($columnInfo['type'], $autofieldTypes)){
-            $field = new $autofieldTypes[$columnInfo['type']]($columnName);
+        if (class_exists($autoFieldType)){
+            $field = new $autoFieldType($columnName);
             return $field->render($model);
         }
 
