@@ -5,8 +5,9 @@ namespace the42coders\TLAP\Fields;
 
 
 use Illuminate\Database\Eloquent\Model;
+use \the42coders\TLAP\Contracts\Fields\Field as FieldContract;
 
-class Field
+class Field implements FieldContract
 {
     public $name;
     public $template;

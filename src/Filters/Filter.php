@@ -2,7 +2,9 @@
 
 namespace the42coders\TLAP\Filters;
 
-class Filter
+use the42coders\TLAP\Contracts\Filters\Filter as FilterContract;
+
+abstract class Filter implements FilterContract
 {
 
 }

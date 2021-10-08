@@ -60,24 +60,24 @@ return [
 
     'autofields' => [
         'type' => [
-            'tinyint(1)' => 'the42coders\TLAP\Fields\CheckboxField',
-            'text' => 'the42coders\TLAP\Fields\TrixField',
-            'timestamp' => 'the42coders\TLAP\Fields\TimeStampField',
-            'datetime' => 'the42coders\TLAP\Fields\TimeStampField',
-            'bigint' => 'the42coders\TLAP\Fields\NumberField',
-            'bigint unsigned' => 'the42coders\TLAP\Fields\NumberField',
+            'tinyint(1)' => \the42coders\TLAP\Fields\CheckboxField::class,
+            'text' => \the42coders\TLAP\Fields\TrixField::class,
+            'timestamp' => \the42coders\TLAP\Fields\TimeStampField::class,
+            'datetime' => \the42coders\TLAP\Fields\TimeStampField::class,
+            'bigint' => \the42coders\TLAP\Fields\NumberField::class,
+            'bigint unsigned' => \the42coders\TLAP\Fields\NumberField::class,
         ],
         'name' => [
-            'pw' => 'the42coders\TLAP\Fields\PasswordField',
-            'password' => 'the42coders\TLAP\Fields\PasswordField',
+            'pw' => \the42coders\TLAP\Fields\PasswordField::class,
+            'password' => \the42coders\TLAP\Fields\PasswordField::class,
         ],
     ],
 
     'datatableFilter' => [
         'type' => [
-            'text' => 'the42coders\TLAP\Filters\ShortenTextFilter',
-            'timestamp' => 'the42coders\TLAP\Filters\FormatTimestamps',
-            'datetime' => 'the42coders\TLAP\Filters\FormatTimestamps',
+            'text' => \the42coders\TLAP\Filters\ShortenTextFilter::class,
+            'timestamp' => \the42coders\TLAP\Filters\FormatTimestamps::class,
+            'datetime' => \the42coders\TLAP\Filters\FormatTimestamps::class,
         ],
     ],
 

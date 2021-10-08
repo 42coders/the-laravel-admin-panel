@@ -61,15 +61,15 @@ class TLAPController extends Controller
 
         $input = $request->all();
 
-        if(empty($input['pw'])){
+        if (empty($input['pw'])){
             unset($input['pw']);
-        }else {
+        } else {
             $input['pw'] = Hash::make($input['pw']);
         }
 
-        if(empty($input['password'])){
+        if (empty($input['password'])){
             unset($input['password']);
-        }else {
+        } else {
             $input['password'] = Hash::make($input['password']);
         }
 
