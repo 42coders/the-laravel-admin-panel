@@ -141,8 +141,9 @@ trait TLAPAdminTrait
 
         $columns = self::getTLAPTableStructure();
 
+
         foreach($columns as $columnName => $column){
-            if($column['nullable'] === 'NO'){
+            if($column['nullable'] === 'NO' && $column['key'] !== 'PRI'){
                 $validation[$columnName] = 'required';
             }
         }
