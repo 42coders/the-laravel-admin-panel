@@ -1,9 +1,9 @@
 <?php
 
-namespace MaxHutschenreiter\TLAP\Tests;
+namespace the42coders\TLAP\Tests;
 
 use Orchestra\Testbench\TestCase;
-use MaxHutschenreiter\TLAP\TLAPServiceProvider;
+use the42coders\TLAP\TLAPServiceProvider;
 
 class ExampleTest extends TestCase
 {
