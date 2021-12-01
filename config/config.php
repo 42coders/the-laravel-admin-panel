@@ -68,6 +68,10 @@ return [
             'bigint unsigned' => \the42coders\TLAP\Fields\NumberField::class,
         ],
         'name' => [
+            'id' => \the42coders\TLAP\Fields\ReadOnlyField::class,
+            'created_at' => \the42coders\TLAP\Fields\ReadOnlyField::class,
+            'updated_at' => \the42coders\TLAP\Fields\ReadOnlyField::class,
+            'deleted_at' => \the42coders\TLAP\Fields\ReadOnlyField::class,
             'pw' => \the42coders\TLAP\Fields\PasswordField::class,
             'password' => \the42coders\TLAP\Fields\PasswordField::class,
         ],
@@ -79,6 +83,11 @@ return [
             'timestamp' => \the42coders\TLAP\Filters\FormatTimestamps::class,
             'datetime' => \the42coders\TLAP\Filters\FormatTimestamps::class,
         ],
+    ],
+
+    'datatableDontDisplay' => [
+        'type' => ['text'],
+        'name' => ['deleted_at'],
     ],
 
 ];

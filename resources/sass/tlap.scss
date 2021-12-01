@@ -11,8 +11,12 @@ body{
 }
 
 .nav{
+    padding-top: 2rem;
     a{
         color: #212529;
+    }
+    .nav-item{
+        padding-left: 1rem;
     }
 }
 

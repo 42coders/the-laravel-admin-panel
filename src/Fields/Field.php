@@ -5,6 +5,7 @@ namespace the42coders\TLAP\Fields;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use \the42coders\TLAP\Contracts\Fields\Field as FieldContract;
 
 class Field implements FieldContract
@@ -65,8 +66,18 @@ class Field implements FieldContract
         return $value;
     }
 
-    public function render($model = null)
+    public function render($model = null): string
     {
         return view( $this->template, ['field' => $this, 'value' => $this->getValue($model)]);
+    }
+
+    public function preProcessInput($value, Request $request, $model = null)
+    {
+        return $value;
+    }
+
+    public function postProcessInput($value, Request $request, $model)
+    {
+        return $value;
     }
 }

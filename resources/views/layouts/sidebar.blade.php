@@ -5,7 +5,7 @@
             <li class="nav-item">
                 <a href="/{{ config('tlap.path') }}/{{ $key }}"
                    class="@if(request()->route()->named($key)) active @endif nav-link align-middle px-0">
-                    <i class="fs-4 bi-gear"></i> <span class="ms-1 d-none d-sm-inline">{{ $modelEntry::getModelName() }}</span>
+                    {!! $modelEntry::getModelIcon() !!} <span class="ms-1 d-none d-sm-inline">{{ $modelEntry::getModelName() }}</span>
                 </a>
             </li>
             @endforeach
@@ -25,7 +25,7 @@
             --}}
         </ul>
         <hr>
-        <div class="dropdown pb-4">
+        {{-- <div class="dropdown pb-4">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
@@ -40,7 +40,7 @@
                 </li>
                 <li><a class="dropdown-item" href="#">Sign out</a></li>
             </ul>
-        </div>
+        </div>--}}
     </div>
 </div>
 {{--

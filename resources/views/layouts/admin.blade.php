@@ -31,6 +31,9 @@
         </div>
     </div>
 </div>
+<script>
+    var base_url = '{{ url('').'/'.config('tlap.path').'/' }}';
+</script>
 @yield('scripts')
 </body>
 </html>

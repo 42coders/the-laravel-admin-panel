@@ -6,7 +6,7 @@
             <h1>{{ $TLAPModel::getModelName() }}</h1>
         </div>
         <div class="col-md-9 d-flex justify-content-end ">
-            <a class="" href="/{{ config('tlap.path') }}/{{ $TLAPModel::getModelPluralName() }}/create" title="create"><i class="bi bi-plus"></i></a>
+            <a class="" href="/{{ config('tlap.path') }}/{{ $TLAPModel->getModelPluralName() }}/create" title="create"><i class="bi bi-plus"></i></a>
         </div>
     </div>
 @endsection

@@ -20,20 +20,22 @@ class UserCrudTest extends TestCase
             'password' => 'secret'
         ]);
 
-        $this->get(route('tlap.index', ['models' => User::getModelPluralName()]))
+        $this->get(route('tlap.index', ['models' => $user->getModelPluralName()]))
             ->assertOk();
 
    }
 
     public function testItCanCreateUser()
     {
+        $user = new User();
+
         $userData = [
             'name' => 'Test User',
             'email' => 'user@test.com',
             'password' => 'pass'
         ];
 
-        $this->post(route('tlap.store', ['models' => User::getModelPluralName()]), $userData)
+        $this->post(route('tlap.store', ['models' => $user->getModelPluralName()]), $userData)
             ->assertRedirect();
 
         unset($userData['password']);
@@ -49,14 +51,16 @@ class UserCrudTest extends TestCase
             'password' => 'secret'
         ]);
 
-        $this->get(route('tlap.show', ['models' => User::getModelPluralName(), 'id' => $user->id]))
+        $this->get(route('tlap.show', ['models' => $user->getModelPluralName(), 'id' => $user->id]))
             ->assertOk()
             ->assertSee($user->name);
     }
 
     public function testItCanShowUserCreateForm()
     {
-        $this->get(route('tlap.create', ['models' => User::getModelPluralName()]))
+        $user = new User();
+
+        $this->get(route('tlap.create', ['models' => $user->getModelPluralName()]))
             ->assertOk()
             ->assertSee('name');
     }
@@ -70,7 +74,7 @@ class UserCrudTest extends TestCase
             'password' => 'secret'
         ]);
 
-         $this->get(route('tlap.edit', ['models' => User::getModelPluralName(), 'id' => $user->id]))
+         $this->get(route('tlap.edit', ['models' => $user->getModelPluralName(), 'id' => $user->id]))
             ->assertOk()
             ->assertSee('name')
             ->assertSee($user->name);
@@ -91,7 +95,7 @@ class UserCrudTest extends TestCase
             'password' => 'pass'
         ];
 
-        $this->post(route('tlap.update', ['models' => User::getModelPluralName(), 'id' => $user->id]), $userData)
+        $this->post(route('tlap.update', ['models' => $user->getModelPluralName(), 'id' => $user->id]), $userData)
             ->assertRedirect();
 
         unset($userData['password']);
@@ -109,7 +113,7 @@ class UserCrudTest extends TestCase
 
         $this->assertModelExists($user);
 
-        $this->get(route('tlap.delete', ['models' => User::getModelPluralName(), 'id' => $user->id]))
+        $this->get(route('tlap.delete', ['models' => $user->getModelPluralName(), 'id' => $user->id]))
             ->assertRedirect();
 
         $this->assertModelMissing($user);

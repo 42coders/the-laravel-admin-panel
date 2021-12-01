@@ -20,7 +20,7 @@ trait TLAPAdminTrait
         return self::$fields;
     }
 
-    public static function getTLAPStaticColumnStructure($tableName): array
+    public function getTLAPStaticColumnStructure($tableName): array
     {
         $structure = [];
 
@@ -39,12 +39,12 @@ trait TLAPAdminTrait
         return $structure;
     }
 
-    public static function withRelations(): array
+    public function withRelations(): array
     {
-        return Arr::pluck(self::getEloquentRelations(), 'name');
+        return Arr::pluck($this->getEloquentRelations(), 'name');
     }
 
-    public static function getEloquentRelations(): array
+    public function getEloquentRelations(): array
     {
         $reflector = new ReflectionClass(self::class);
 
@@ -66,28 +66,28 @@ trait TLAPAdminTrait
         return class_basename(__CLASS__);
     }
 
-    public static function getModelPluralName(): string
+    public function getModelPluralName(): string
     {
         return Str::lower(Str::plural(self::getModelName()));
     }
 
-    public static function getTLAPStaticTableName()
+    public function getTLAPStaticTableName()
     {
         return (new static)->getTable();
     }
 
-    public static function getTLAPTableStructure(): array
+    public function getTLAPTableStructure(): array
     {
-        $tableName = self::getTLAPStaticTableName();
+        $tableName = $this->getTLAPStaticTableName();
 
-        return self::getTLAPStaticColumnStructure($tableName);
+        return $this->getTLAPStaticColumnStructure($tableName);
     }
 
-    public static function getForm($model = null): string
+    public function getForm($model = null): string
     {
         if(empty(self::fields())) {
 
-            $tableStructure = self::getTLAPTableStructure();
+            $tableStructure = $this->getTLAPTableStructure();
             $form = '';
             foreach ($tableStructure as $columnName => $column) {
                 $form .= TLAP::getForm($columnName, $column, $model);
@@ -105,15 +105,15 @@ trait TLAPAdminTrait
         return $form;
     }
 
-    public static function getColumnNames(): array
+    public function getColumnNames(): array
     {
-        return array_keys(self::getTLAPTableStructure());
+        return array_keys($this->getTLAPTableStructure());
     }
 
-    public static function getDatatableFields(): array
+    public function getDatatableFields(): array
     {
         if (empty(self::fields())){
-            return array_keys(self::cleanData(self::getTLAPTableStructure()));
+            return array_keys($this->cleanData($this->getTLAPTableStructure()));
         }
 
         $columns = [];
@@ -127,19 +127,28 @@ trait TLAPAdminTrait
         return $columns;
     }
 
-    public static function cleanData($array): array
+    public function cleanData($array): array
     {
         unset($array['password'], $array['remember_token']);
+
+        foreach($array as $dataKey => $dataValue){
+            if(in_array($dataValue['type'], config('tlap.datatableDontDisplay.type'))){
+                unset($array[$dataKey]);
+            }
+            if(in_array($dataKey, config('tlap.datatableDontDisplay.name'))){
+                unset($array[$dataKey]);
+            }
+        }
 
         return $array;
     }
 
-    public static function validation():array
+    public function validation():array
     {
         $validation = [];
 
 
-        $columns = self::getTLAPTableStructure();
+        $columns = $this->getTLAPTableStructure();
 
 
         foreach($columns as $columnName => $column){
@@ -162,18 +171,18 @@ trait TLAPAdminTrait
 
 
 
-    public static function getDatatable(Request $request, $ids = null): \Illuminate\Http\JsonResponse
+    public function getDatatable(Request $request, $ids = null): \Illuminate\Http\JsonResponse
     {
         $totalData = self::count();
 
         $totalFiltered = $totalData;
 
+        $columns = $this->getColumnNames();
+
         $limit = $request->input('length');
         $start = $request->input('start');
-        $order = self::getColumnNames()[$request->input('order.0.column')];
+        $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
-
-        $columns = self::getColumnNames();
 
         if ($columns[0] !== 'id'){
             array_unshift($columns, 'id');
@@ -190,7 +199,7 @@ trait TLAPAdminTrait
             $search = $request->input ('search.value');
 
             $data = self::query()->select($columns);
-            foreach(self::getColumnNames() as $column){
+            foreach($this->getColumnNames() as $column){
                 $data = $data->orWhere($column, 'LIKE', "%{$search}%");
             }
             $data = $data
@@ -199,13 +208,15 @@ trait TLAPAdminTrait
                 ->orderBy($order, $dir)
                 ->get();
 
-            $totalFiltered = self::where('id', 'LIKE', "%{$search}%")
-                ->orWhere('name', 'LIKE', "%{$search}%")
-                ->count();
+            $totalFiltered = self::query();
+            foreach($this->getColumnNames() as $column){
+                $totalFiltered = $totalFiltered->orWhere($column, 'LIKE', "%{$search}%");
+            }
+            $totalFiltered = $totalFiltered->count();
         }
 
-        $columnStructure = self::getTLAPTableStructure();
-        $data = self::applyDataFilter($data->toArray(), $columnStructure);
+        $columnStructure = $this->getTLAPTableStructure();
+        $data = $this->applyDataFilter($data->toArray(), $columnStructure);
 
         return response()->json([
             'draw' => intval($request->input('draw')),
@@ -215,9 +226,9 @@ trait TLAPAdminTrait
         ]);
     }
 
-    public static function applyDataFilter(array $data, array $columnsStructure): array
+    public function applyDataFilter(array $data, array $columnsStructure): array
     {
-        $columnStructure = self::getTLAPTableStructure();
+        $columnStructure = $this->getTLAPTableStructure();
 
         foreach($data as $dataKey => $dataValue){
             foreach($columnStructure as $columnKey => $columnValue){
@@ -232,18 +243,18 @@ trait TLAPAdminTrait
         return $data;
     }
 
-    public static function getDatatableIdFiltered(Request $request, $ids = null): \Illuminate\Http\JsonResponse
+    public function getDatatableIdFiltered(Request $request, $ids = null): \Illuminate\Http\JsonResponse
     {
         $totalData = self::whereIn('id', $ids)->count();
 
         $totalFiltered = $totalData;
 
+        $columns = self::getColumnNames();
+
         $limit = $request->input('length');
         $start = $request->input('start');
-        $order = self::getColumnNames()[$request->input('order.0.column')];
+        $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
-
-        $columns = self::getColumnNames();
 
         if($columns[0] !== 'id'){
             array_unshift($columns, 'id');
@@ -266,11 +277,10 @@ trait TLAPAdminTrait
             });
 
             $data = $data->where(function ($q) use ($search){
-                foreach(self::getColumnNames() as $column){
+                foreach($this->getColumnNames() as $column){
                     $q->orWhere($column, 'LIKE', "%{$search}%");
                 }
             });
-
 
             $data = $data
                 ->offset($start)
@@ -281,15 +291,15 @@ trait TLAPAdminTrait
             $totalFiltered = self::
                 whereIn('id', $ids)
                 ->where(function ($q) use ($search) {
-                    foreach(self::getColumnNames() as $column){
+                    foreach($this->getColumnNames() as $column){
                         $q->orWhere($column, 'LIKE', "%{$search}%");
                     }
                 })
                 ->count();
         }
 
-        $columnStructure = self::getTLAPTableStructure();
-        $data = self::applyDataFilter($data->toArray(), $columnStructure);
+        $columnStructure = $this->getTLAPTableStructure();
+        $data = $this->applyDataFilter($data->toArray(), $columnStructure);
 
         return response()->json([
             'draw' => intval($request->input('draw')),
@@ -297,6 +307,11 @@ trait TLAPAdminTrait
             "recordsFiltered"=> intval($totalFiltered),
             'data' => $data
         ]);
+    }
+
+    public static function getModelIcon(): string
+    {
+        return self::$sidebarIcon ?? '<i class="fs-4 bi-gear"></i>';
     }
 
 }

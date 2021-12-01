@@ -31,7 +31,7 @@ class TLAPController extends Controller
     {
         $TLAPModel = TLAPModel::getModel($models);
 
-        $model = $TLAPModel::where('id', $id)->with($TLAPModel::withRelations())->first();
+        $model = $TLAPModel::where('id', $id)->with($TLAPModel->withRelations())->first();
 
         return view('tlap::pages.show', [
             'model' => $model,
@@ -56,10 +56,15 @@ class TLAPController extends Controller
         $TLAPModel = TLAPModel::getModel($models);
 
         $model = $TLAPModel::find($id);
-
-        $validated = $request->validate($TLAPModel::validation());
+        $validated = $request->validate($TLAPModel->validation());
 
         $input = $request->all();
+
+        foreach($model::fields() as $field){
+            if(array_key_exists($field->name, $input)){
+                $input[$field->name] = $field->preProcessInput($input[$field->name], $request, $model);
+            }
+        }
 
         if (empty($input['pw'])){
             unset($input['pw']);
@@ -73,9 +78,19 @@ class TLAPController extends Controller
             $input['password'] = Hash::make($input['password']);
         }
 
+        if(isset($input['_token'])){
+            unset($input['_token']);
+        }
+
         $model->update($input);
 
-        return redirect()->route('tlap.show', ['models' => $model::getModelPluralName(), 'id' => $model->id]);
+        foreach($model::fields() as $field){
+            if(array_key_exists($field->name, $input)){
+                $input[$field->name] = $field->postProcessInput($input[$field->name], $request, $model);
+            }
+        }
+
+        return redirect()->route('tlap.show', ['models' => $model->getModelPluralName(), 'id' => $model->id]);
     }
 
     public function create($models)
@@ -91,12 +106,22 @@ class TLAPController extends Controller
     {
         $TLAPModel = TLAPModel::getModel($models);
 
-        $validated = $request->validate($TLAPModel::validation());
+        $validated = $request->validate($TLAPModel->validation());
 
         $input = $request->all();
 
+        foreach($TLAPModel::fields() as $field){
+            if(array_key_exists($field->name, $input)){
+                $input[$field->name] = $field->preProcessInput($input[$field->name], $request);
+            }
+        }
+
         if(isset($input['pw'])){
             $input['pw'] = Hash::make($input['pw']);
+        }
+
+        if(isset($input['_token'])){
+            unset($input['_token']);
         }
 
         if(isset($input['password'])){
@@ -105,7 +130,13 @@ class TLAPController extends Controller
 
         $createdModel = $TLAPModel::create($input);
 
-        return redirect()->route('tlap.show', ['models' => $createdModel::getModelPluralName(), 'id' => $createdModel->id]);
+        foreach($createdModel::fields() as $field){
+            if(array_key_exists($field->name, $input)){
+                $input[$field->name] = $field->postProcessInput($input[$field->name], $request, $createdModel);
+            }
+        }
+
+        return redirect()->route('tlap.show', ['models' => $createdModel->getModelPluralName(), 'id' => $createdModel->id]);
     }
 
     public function datatable($models, Request $request)
@@ -113,10 +144,10 @@ class TLAPController extends Controller
         $TLAPModel = TLAPModel::getModel($models);
 
         if(empty($request->ids)){
-            return $TLAPModel::getDataTable($request);
+            return $TLAPModel->getDataTable($request);
         }
 
-        return $TLAPModel::getDatatableIdFiltered($request, $request->ids);
+        return $TLAPModel->getDatatableIdFiltered($request, $request->ids);
     }
 
     public function delete($models, $id)
@@ -126,11 +157,26 @@ class TLAPController extends Controller
         $model = $TLAPModel::find($id);
 
         if(empty($model)){
-            return redirect()->route('tlap.index', ['models' => $TLAPModel::getModelPluralName()]);
+            return redirect()->route('tlap.index', ['models' => $TLAPModel->getModelPluralName()]);
         }
 
         $model->delete();
 
-        return redirect()->route('tlap.index', ['models' => $model::getModelPluralName()]);
+        return redirect()->route('tlap.index', ['models' => $model->getModelPluralName()]);
+    }
+
+    public function trixUpload(Request $request)
+    {
+        if($request->hasFile('file')) {
+            $filenameWithExtension = $request->file('file')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $filenameToStore = $filename.'_'.time().'.'.$extension;
+            $request->file('file')->storeAs('public/uploads', $filenameToStore);
+            $path = asset('storage/uploads/'.$filenameToStore);
+
+            echo $path;
+            exit;
+        }
     }
 }

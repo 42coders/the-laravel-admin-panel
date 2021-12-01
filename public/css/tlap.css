@@ -8546,8 +8546,16 @@ body {
   background-color: #edf2f9;
 }
 
+.nav {
+  padding-top: 2rem;
+}
+
 .nav a {
   color: #212529;
+}
+
+.nav .nav-item {
+  padding-left: 1rem;
 }
 
 .nav-pills .nav-link.active,

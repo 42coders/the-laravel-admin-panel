@@ -6,6 +6,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use the42coders\TLAP\Fields\CheckboxField;
 use the42coders\TLAP\Fields\NumberField;
+use the42coders\TLAP\Fields\ReadOnlyField;
 use the42coders\TLAP\Fields\TextAreaField;
 use the42coders\TLAP\Fields\TextField;
 use the42coders\TLAP\Fields\TimeStampField;
@@ -21,6 +22,7 @@ class TLAP
     {
         Route::group(['prefix' => config('tlap.path'), 'namespace' => __NAMESPACE__.'\Http\Controllers'], function () {
             Route::get('/', 'TLAPController@start')->name('tlap.start');
+            Route::post('/trix-upload', [TLAPController::class, 'trixUpload'])->name('tlap.trix-upload');
             Route::get('/{models}/', [TLAPController::class, 'index'])->name('tlap.index');
             Route::post('/{models}/', [TLAPController::class, 'store'])->name('tlap.store');
             Route::get('/{models}/create', [TLAPController::class, 'create'])->name('tlap.create');
