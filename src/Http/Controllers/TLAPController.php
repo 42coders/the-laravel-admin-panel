@@ -60,9 +60,11 @@ class TLAPController extends Controller
 
         $input = $request->all();
 
-        foreach($model::fields() as $field){
-            if(array_key_exists($field->name, $input)){
-                $input[$field->name] = $field->preProcessInput($input[$field->name], $request, $model);
+        if($model::fields()) {
+            foreach ($model::fields() as $field) {
+                if (array_key_exists($field->name, $input)) {
+                    $input[$field->name] = $field->preProcessInput($input[$field->name], $request, $model);
+                }
             }
         }
 
@@ -84,9 +86,11 @@ class TLAPController extends Controller
 
         $model->update($input);
 
-        foreach($model::fields() as $field){
-            if(array_key_exists($field->name, $input)){
-                $input[$field->name] = $field->postProcessInput($input[$field->name], $request, $model);
+        if($model::fields()) {
+            foreach ($model::fields() as $field) {
+                if (array_key_exists($field->name, $input)) {
+                    $input[$field->name] = $field->postProcessInput($input[$field->name], $request, $model);
+                }
             }
         }
 
@@ -110,9 +114,11 @@ class TLAPController extends Controller
 
         $input = $request->all();
 
-        foreach($TLAPModel::fields() as $field){
-            if(array_key_exists($field->name, $input)){
-                $input[$field->name] = $field->preProcessInput($input[$field->name], $request);
+        if($TLAPModel::fields()) {
+            foreach ($TLAPModel::fields() as $field) {
+                if (array_key_exists($field->name, $input)) {
+                    $input[$field->name] = $field->preProcessInput($input[$field->name], $request);
+                }
             }
         }
 
@@ -130,9 +136,11 @@ class TLAPController extends Controller
 
         $createdModel = $TLAPModel::create($input);
 
-        foreach($createdModel::fields() as $field){
-            if(array_key_exists($field->name, $input)){
-                $input[$field->name] = $field->postProcessInput($input[$field->name], $request, $createdModel);
+        if($createdModel::fields()) {
+            foreach ($createdModel::fields() as $field) {
+                if (array_key_exists($field->name, $input)) {
+                    $input[$field->name] = $field->postProcessInput($input[$field->name], $request, $createdModel);
+                }
             }
         }
 
