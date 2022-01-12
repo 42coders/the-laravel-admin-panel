@@ -232,6 +232,9 @@ trait TLAPAdminTrait
 
         foreach($data as $dataKey => $dataValue){
             foreach($columnStructure as $columnKey => $columnValue){
+                if(!isset($data[$dataKey][$columnKey])){
+                    continue;
+                }
                 $filterName = config('tlap.datatableFilter.type.' . $columnValue['type']);
                 if (class_exists($filterName)) {
                     $filter = app($filterName);
