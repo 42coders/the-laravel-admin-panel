@@ -2,9 +2,12 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import '~@fortawesome/fontawesome-free/css/all';
 @import "~datatables.net-bs5/css/dataTables.bootstrap5.css";
-@import "~datatables.net-responsive-bs";
-@import "~datatables.net-responsive-bs5";
+@import "~datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
+@import '~datatables.net-select-bs5/css/select.bootstrap5.css';
 @import "~trix/dist/trix.css";
+@import "~@uppy/core/dist/style.css";
+@import "~@uppy/dashboard/dist/style.css";
+@import "~@uppy/image-editor/dist/style.css";
 
 body{
     background-color: #edf2f9;

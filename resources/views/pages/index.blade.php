@@ -12,10 +12,10 @@
 @endsection
 
 @section('content')
-    <table id="datatest" class="table display responsive nowrap" width="100%">
-    </table>
+    {{ $dataTable->table() }}
 @endsection
 
 @section('scripts')
-    @include('tlap::datatable.datatable', ['tableName' => 'datatest', 'TLAPModel' => $TLAPModel])
+    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+
 @endsection

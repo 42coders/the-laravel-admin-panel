@@ -9,6 +9,9 @@
                 </a>
             </li>
             @endforeach
+            <li class="nav-item">
+                <a href="/medialibrary" class="nav-link align-middle px-0">Media Library</a>
+            </li>
             {{--
             <li>
                 <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">

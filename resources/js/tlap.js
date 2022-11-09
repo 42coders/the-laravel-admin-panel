@@ -1,14 +1,32 @@
 try {
-    window.$ = window.jQuery = require('jquery');
+    //window.$ = window.jQuery = require('jquery');
 } catch (e) {}
 
 
 import 'bootstrap';
-import 'datatables.net-bs5';
 import 'trix';
+import 'laravel-datatables-vite';
+import Uppy from "@uppy/core";
+import Dashboard from "@uppy/dashboard";
+import Tus from "@uppy/tus";
+import ImageEditor from '@uppy/image-editor'
+//import Sortable from 'sortablejs';
+//import Dropzone from "dropzone";
+//import Cropper from "cropperjs";
+//require('../../node_modules/cropperjs/dist/cropper');
+//import Sortable from 'sortablejs';
 //import 'datatables.net-responsive-bs';
 //import 'datatables.net-responsive-bs5';
 //import 'jquery-datatables-checkboxes';
+
+window.Uppy = Uppy;
+window.Dashboard = Dashboard;
+window.Tus = Tus;
+window.ImageEditor = ImageEditor;
+
+
+//window.Cropper = Cropper;
+//window.Dropzone = Dropzone;
 
 $.ajaxSetup({
     headers: {

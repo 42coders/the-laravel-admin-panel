@@ -27,8 +27,7 @@ return [
     */
 
     'models' => [
-        'users' => 'App\Models\User',
-        //'companies' => 'App\Models\Company',
+        //'users' => 'App\Models\User',
     ],
 
     /*
@@ -90,4 +89,7 @@ return [
         'name' => ['deleted_at'],
     ],
 
+    'medialibrary' => [
+
+    ],
 ];

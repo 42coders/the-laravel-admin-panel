@@ -7,6 +7,7 @@ use Illuminate\Support\Carbon;
 class FormatTimestamps
 {
     public function filter($value){
+
         if(empty($value)){
             return $value;
         }

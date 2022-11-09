@@ -17,11 +17,12 @@
     ],
     "require": {
         "php": ">7.1",
-        "illuminate/support": "^9.0",
-        "spatie/laravel-medialibrary": "^9.0.0"
+        "illuminate/support": "^9.18",
+        "spatie/laravel-medialibrary": "^10.5",
+        "yajra/laravel-datatables": "^9.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.0",
+        "orchestra/testbench": "7.*",
         "phpstan/phpstan": "^1.2",
         "phpunit/phpunit": "^9.0"
     },

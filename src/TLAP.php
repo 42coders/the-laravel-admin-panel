@@ -12,6 +12,7 @@ use the42coders\TLAP\Fields\TextField;
 use the42coders\TLAP\Fields\TimeStampField;
 use the42coders\TLAP\Fields\PasswordField;
 use the42coders\TLAP\Http\Controllers\TLAPController;
+use the42coders\TLAP\Http\Controllers\TLAPMediaController;
 
 class TLAP
 {
@@ -21,6 +22,9 @@ class TLAP
     public static function routes()
     {
         Route::group(['prefix' => config('tlap.path'), 'namespace' => __NAMESPACE__.'\Http\Controllers'], function () {
+
+            Route::get('/medialibrary', [TLAPMediaController::class, 'index'])->name('tlap.medialibrary.index');
+
             Route::get('/', 'TLAPController@start')->name('tlap.start');
             Route::post('/trix-upload', [TLAPController::class, 'trixUpload'])->name('tlap.trix-upload');
             Route::get('/{models}/', [TLAPController::class, 'index'])->name('tlap.index');

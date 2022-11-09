@@ -66,7 +66,7 @@ class Field implements FieldContract
         return $value;
     }
 
-    public function render($model = null): string
+    public function render($model = null)
     {
         return view( $this->template, ['field' => $this, 'value' => $this->getValue($model)]);
     }

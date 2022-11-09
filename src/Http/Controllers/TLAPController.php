@@ -5,6 +5,7 @@ namespace the42coders\TLAP\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use the42coders\TLAP\TLAPDataTable;
 use the42coders\TLAP\TLAPModel;
 
 class TLAPController extends Controller
@@ -19,7 +20,12 @@ class TLAPController extends Controller
 
         $TLAPModel = TLAPModel::getModel($models);
 
-        $models = $TLAPModel::all();
+        $dataTable = new TLAPDataTable($TLAPModel);
+
+        return $dataTable->render('tlap::pages.index', [
+           // 'models' => $models,
+            'TLAPModel' => $TLAPModel,
+        ]);
 
         return view('tlap::pages.index', [
             'models' => $models,

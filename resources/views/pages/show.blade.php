@@ -7,6 +7,7 @@
         </div>
         <div class="col-md-9 d-flex justify-content-end ">
             <a class="" href="/{{ config('tlap.path') }}/{{ $TLAPModel->getModelPluralName() }}/{{ $model->id }}/edit/" title="edit"><i class="bi bi-pencil-square"></i></a>
+            {!! $model->getActions() !!}
         </div>
     </div>
 @endsection

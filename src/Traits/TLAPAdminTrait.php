@@ -317,4 +317,9 @@ trait TLAPAdminTrait
         return self::$sidebarIcon ?? '<i class="fs-4 bi-gear"></i>';
     }
 
+    public function getActions(): string
+    {
+        return '';
+    }
+
 }
