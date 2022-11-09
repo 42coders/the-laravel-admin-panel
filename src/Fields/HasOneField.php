@@ -23,12 +23,12 @@ class HasOneField extends Field
      * @param string|null $template
      * @param string|null $col
      */
-    public function __construct(string $name, string $label = null, bool $dataTable = true, bool $editable = true, string $description = null, string $validation = null, string $defaultValue = null, string $template = null, string $col = null, $relation = null)
+    public function __construct(string $name, string $label = null, bool $dataTable = true, bool $editable = true, string $description = null, string $validation = null, string $defaultValue = null, string $template = null, string $col = null, $relation = null, $relationDisplayName = 'name')
     {
         parent::__construct($name, $template, $dataTable, $editable, $label, $description, $validation, $col, $defaultValue);
 
         $model = new $relation();
 
-        $this->relations = $model::select('id', 'name')->get();
+        $this->relations = $model::select('id', $relationDisplayName)->get();
     }
 }
